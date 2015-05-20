@@ -26,18 +26,9 @@
 		</activity>
 		<activity android:name=".DemoVideoDisplayActivity" android:screenOrientation="landscape"/>
 		<activity android:name=".PreferenceActivity"/>
-		<activity android:name=".GradientDisplayActivity" android:screenOrientation="landscape"/>
 		<activity android:name=".ScalePointDisplayActivity" android:screenOrientation="landscape"/>
 		<activity android:name=".LineDisplayActivity" android:screenOrientation="landscape"/>
-		<activity android:name=".StabilizeDisplayActivity" android:screenOrientation="landscape"/>
-		<activity android:name=".MosaicDisplayActivity" android:screenOrientation="landscape"/>
-		<activity android:name=".AssociationActivity" android:screenOrientation="landscape"/>
-		<activity android:name=".CameraInformationActivity"/>
-		<activity android:name=".DisparityActivity" android:screenOrientation="landscape"/>
-		<activity android:name=".ShapeFitDisplayActivity" android:screenOrientation="landscape"/>
-        <activity android:name=".ImageTransformActivity" android:screenOrientation="landscape"/>
 		<activity android:name=".ShapeFittingActivity" android:screenOrientation="landscape"/>
 		<activity android:name=".CannyEdgeActivity" android:screenOrientation="landscape"/>
-		<activity android:name=".SegmentationDisplayActivity" android:screenOrientation="landscape"/>
 	</application>
 </manifest>

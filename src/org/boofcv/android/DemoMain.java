@@ -2,6 +2,7 @@ package org.boofcv.android;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Camera;
@@ -10,8 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.SimpleExpandableListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
@@ -26,7 +28,7 @@ import java.util.Map;
 
 import boofcv.android.BoofAndroidFiles;
 
-public class DemoMain extends Activity implements ExpandableListView.OnChildClickListener {
+public class DemoMain extends ListActivity {
 
 	// contains information on all the cameras.  less error prone and easier to deal with
 	public static List<CameraSpecs> specs = new ArrayList<CameraSpecs>();
@@ -35,6 +37,8 @@ public class DemoMain extends Activity implements ExpandableListView.OnChildClic
 	// If another activity modifies the demo preferences this needs to be set to true so that it knows to reload
 	// camera parameters.
 	public static boolean changedPreferences = false;
+
+	private List<String> listValues;
 
 	List<Group> groups = new ArrayList<Group>();
 
@@ -50,25 +54,43 @@ public class DemoMain extends Activity implements ExpandableListView.OnChildClic
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		listValues = new ArrayList<String>();
+		listValues.add("Scale Space");
+		listValues.add("Lines");
+		listValues.add("Canny Edge");
+		listValues.add("Shape Fitting");
+
+		// initiate the listadapter
+		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,
+				R.layout.row_layout, R.id.listText, listValues);
+
+		// assign the list adapter
+		setListAdapter(myAdapter);
+
+//		detect.addChild("Scale Space", ScalePointDisplayActivity.class);
+//		detect.addChild("Lines", LineDisplayActivity.class);
+//		detect.addChild("Canny Edge",CannyEdgeActivity.class);
+//		detect.addChild("Shape Fitting", ShapeFittingActivity.class);
+
+
 		createGroups();
 
-		ExpandableListView listView = (ExpandableListView) findViewById(R.id.DemoListView);
+//		ExpandableListView listView = (ExpandableListView) findViewById(R.id.DemoListView);
 
-		SimpleExpandableListAdapter expListAdapter =
-				new SimpleExpandableListAdapter(
-						this,
-						createGroupList(),              // Creating group List.
-						R.layout.group_row,             // Group item layout XML.
-						new String[] { "Group Item" },  // the key of group item.
-						new int[] { R.id.row_name },    // ID of each group item.-Data under the key goes into this TextView.
-						createChildList(),              // childData describes second-level entries.
-						R.layout.child_row,             // Layout for sub-level entries(second level).
-						new String[] {"Sub Item"},      // Keys in childData maps to display.
-						new int[] { R.id.grp_child}     // Data under the keys above go into these TextViews.
-				);
-
-		listView.setAdapter(expListAdapter);
-		listView.setOnChildClickListener(this);
+//		SimpleExpandableListAdapter expListAdapter =
+//				new SimpleExpandableListAdapter(
+//						this,
+//						createGroupList(),              // Creating group List.
+//						R.layout.group_row,             // Group item layout XML.
+//						new String[] { "Group Item" },  // the key of group item.
+//						new int[] { R.id.row_name },    // ID of each group item.-Data under the key goes into this TextView.
+//						createChildList(),              // childData describes second-level entries.
+//						R.layout.child_row,             // Layout for sub-level entries(second level).
+//						new String[] {"Sub Item"},      // Keys in childData maps to display.
+//						new int[] { R.id.grp_child}     // Data under the keys above go into these TextViews.
+//				);
+//
+//		listView.setAdapter(expListAdapter);
 	}
 
 	@Override
@@ -113,6 +135,31 @@ public class DemoMain extends Activity implements ExpandableListView.OnChildClic
 			}
 			default:
 				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	// when an item of the list is clicked
+	@Override
+	protected void onListItemClick(ListView list, View view, int position, long id) {
+		super.onListItemClick(list, view, position, id);
+
+		String selectedItem = (String) getListView().getItemAtPosition(position);
+		//String selectedItem = (String) getListAdapter().getItem(position);
+
+		Intent myIntent;
+
+		if (selectedItem.equals("Scale Space")) {
+			myIntent = new Intent(DemoMain.this, ScalePointDisplayActivity.class);
+			DemoMain.this.startActivity(myIntent);
+		} else if (selectedItem.equals("Lines")) {
+			myIntent = new Intent(DemoMain.this, LineDisplayActivity.class);
+			DemoMain.this.startActivity(myIntent);
+		} else if (selectedItem.equals("Canny Edge")) {
+			myIntent = new Intent(DemoMain.this, CannyEdgeActivity.class);
+			DemoMain.this.startActivity(myIntent);
+		} else if (selectedItem.equals("Shape Fitting")) {
+			myIntent = new Intent(DemoMain.this, ShapeFittingActivity.class);
+			DemoMain.this.startActivity(myIntent);
 		}
 	}
 
