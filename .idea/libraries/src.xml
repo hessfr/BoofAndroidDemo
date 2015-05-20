@@ -1,0 +1,27 @@
+<component name="libraryTable">
+  <library name="src">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../ejml/examples/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/examples/test" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/all/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/core/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/core/test" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/dense64/generate" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/dense64/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/dense64/test" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/denseC64/generate" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/denseC64/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/denseC64/test" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/equation/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/equation/test" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/experimental/benchmarks/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/experimental/benchmarks/test" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/experimental/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/experimental/test" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/simple/src" />
+      <root url="file://$PROJECT_DIR$/../ejml/main/simple/test" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="benchmark">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../ddogleg/benchmark" />
+      <root url="file://$PROJECT_DIR$/../ddogleg/examples/src" />
+      <root url="file://$PROJECT_DIR$/../ddogleg/generate" />
+      <root url="file://$PROJECT_DIR$/../ddogleg/src" />
+      <root url="file://$PROJECT_DIR$/../ddogleg/test" />
+    </SOURCES>
+  </library>
+</component>
