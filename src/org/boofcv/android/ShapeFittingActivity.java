@@ -6,16 +6,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 
 import java.util.List;
 
-import boofcv.alg.feature.shapes.FitData;
 import boofcv.alg.feature.shapes.ShapeFittingOps;
 import boofcv.alg.filter.binary.BinaryImageOps;
 import boofcv.alg.filter.binary.Contour;
@@ -32,9 +25,7 @@ import boofcv.struct.image.ImageSInt16;
 import boofcv.struct.image.ImageSInt32;
 import boofcv.struct.image.ImageType;
 import boofcv.struct.image.ImageUInt8;
-import georegression.metric.UtilAngle;
 import georegression.struct.point.Point2D_I32;
-import georegression.struct.shapes.EllipseRotated_F64;
 
 /**
  * Fits different shapes to binary images
@@ -42,58 +33,27 @@ import georegression.struct.shapes.EllipseRotated_F64;
  * @author Peter Abeles
  */
 public class ShapeFittingActivity extends DemoVideoDisplayActivity
-		implements AdapterView.OnItemSelectedListener
+//		implements AdapterView.OnItemSelectedListener
 {
 
-	Spinner spinnerView;
+//	Spinner spinnerView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		LayoutInflater inflater = getLayoutInflater();
-		LinearLayout controls = (LinearLayout)inflater.inflate(R.layout.select_algorithm,null);
-
-		LinearLayout parent = getViewContent();
-		parent.addView(controls);
-
-		spinnerView = (Spinner)controls.findViewById(R.id.spinner_algs);
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-				R.array.shapes, android.R.layout.simple_spinner_item);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerView.setAdapter(adapter);
-		spinnerView.setOnItemSelectedListener(this);
+		startShapeFitting();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		startShapeFitting(spinnerView.getSelectedItemPosition());
+		startShapeFitting();
 	}
 
-	@Override
-	public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id ) {
-		startShapeFitting(pos);
+	private void startShapeFitting() {
+		setProcessing(new PolygonProcessing() );
 	}
-
-	private void startShapeFitting(int pos) {
-		switch (pos) {
-			case 0:
-				setProcessing(new EllipseProcessing() );
-				break;
-
-			case 1:
-				setProcessing(new PolygonProcessing() );
-				break;
-//
-//			case 2:
-//				setProcessing(new BlurProcessing(FactoryBlurFilter.median(ImageUInt8.class,2)) );
-//				break;
-		}
-	}
-
-	@Override
-	public void onNothingSelected(AdapterView<?> adapterView) {}
 
 	protected abstract class BaseProcessing extends VideoImageProcessing<ImageUInt8> {
 		ImageSInt16 edge;
@@ -158,13 +118,13 @@ public class ShapeFittingActivity extends DemoVideoDisplayActivity
 		protected abstract void fitShape( List<Point2D_I32> contour , Canvas canvas );
 	}
 
+	/*
 	protected class EllipseProcessing extends BaseProcessing {
 
 		FitData<EllipseRotated_F64> ellipse = new FitData<EllipseRotated_F64>(new EllipseRotated_F64());
 
 		@Override
 		protected void fitShape(List<Point2D_I32> contour, Canvas canvas) {
-			// TODO unroll and recycle this function
 			ShapeFittingOps.fitEllipse_I32(contour, 0, false, ellipse);
 
 			float phi = (float)UtilAngle.radianToDegree(ellipse.shape.phi);
@@ -183,12 +143,12 @@ public class ShapeFittingActivity extends DemoVideoDisplayActivity
 			canvas.rotate(-phi, cx, cy);
 		}
 	}
+	*/
 
 	protected class PolygonProcessing extends BaseProcessing {
 
 		@Override
 		protected void fitShape(List<Point2D_I32> contour, Canvas canvas) {
-			// TODO unroll and recycle this function
 			List<PointIndex_I32> poly = ShapeFittingOps.fitPolygon(contour, true, 4, 0.3f, 0);
 
 			for( int i = 1; i < poly.size(); i++ ) {
