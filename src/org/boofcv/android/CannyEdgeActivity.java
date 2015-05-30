@@ -28,6 +28,8 @@ import boofcv.struct.image.ImageUInt8;
 public class CannyEdgeActivity extends DemoVideoDisplayActivity
 	implements SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener
 {
+	private static final String TAG = "CannyEdgeActivity";
+
 	Random rand = new Random(234);
 	int []rgb = new int[0];
 
@@ -55,6 +57,7 @@ public class CannyEdgeActivity extends DemoVideoDisplayActivity
 		CheckBox toggle = (CheckBox)controls.findViewById(R.id.check_colorize);
 		toggle.setOnCheckedChangeListener(this);
 		colorize = toggle.isChecked();
+
 	}
 
 	@Override
@@ -66,6 +69,7 @@ public class CannyEdgeActivity extends DemoVideoDisplayActivity
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 		threshold = progress/100.0f;
+
 	}
 
 	@Override

@@ -22,6 +22,9 @@
       <root url="file://$PROJECT_DIR$/../ejml/main/experimental/test" />
       <root url="file://$PROJECT_DIR$/../ejml/main/simple/src" />
       <root url="file://$PROJECT_DIR$/../ejml/main/simple/test" />
+      <root url="file://$PROJECT_DIR$/../BoofCV/integration/android/examples/video/src" />
+      <root url="file://$PROJECT_DIR$/../BoofCV/integration/android/src" />
+      <root url="file://$PROJECT_DIR$/../BoofCV/integration/android/test" />
     </SOURCES>
   </library>
 </component>

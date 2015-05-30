@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Bundle;
 
 import java.util.List;
@@ -32,11 +31,7 @@ import georegression.struct.point.Point2D_I32;
  *
  * @author Peter Abeles
  */
-public class ShapeFittingActivity extends DemoVideoDisplayActivity
-//		implements AdapterView.OnItemSelectedListener
-{
-
-//	Spinner spinnerView;
+public class ShapeFittingActivity extends DemoVideoDisplayActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +56,7 @@ public class ShapeFittingActivity extends DemoVideoDisplayActivity
 		ImageUInt8 filtered1;
 		ImageSInt32 contourOutput;
 		Paint paint = new Paint();
-		RectF r = new RectF();
+//		RectF r = new RectF();
 		LinearContourLabelChang2004 findContours = new LinearContourLabelChang2004(ConnectRule.EIGHT);
 
 		protected BaseProcessing() {
@@ -78,8 +73,8 @@ public class ShapeFittingActivity extends DemoVideoDisplayActivity
 			contourOutput = new ImageSInt32(width,height);
 
 			paint.setStyle(Paint.Style.STROKE);
-			paint.setStrokeWidth(3f);
-			paint.setColor(Color.RED);
+			paint.setStrokeWidth(2f);
+			paint.setColor(Color.MAGENTA);
 		}
 
 		@Override
@@ -100,7 +95,7 @@ public class ShapeFittingActivity extends DemoVideoDisplayActivity
 			// draw binary image for output
 			VisualizeImageData.binaryToBitmap(filtered1, output, storage);
 
-			// draw the ellipses
+			// draw the shapes
 			findContours.process(filtered1,contourOutput);
 			List<Contour> contours = findContours.getContours().toList();
 
@@ -117,33 +112,6 @@ public class ShapeFittingActivity extends DemoVideoDisplayActivity
 
 		protected abstract void fitShape( List<Point2D_I32> contour , Canvas canvas );
 	}
-
-	/*
-	protected class EllipseProcessing extends BaseProcessing {
-
-		FitData<EllipseRotated_F64> ellipse = new FitData<EllipseRotated_F64>(new EllipseRotated_F64());
-
-		@Override
-		protected void fitShape(List<Point2D_I32> contour, Canvas canvas) {
-			ShapeFittingOps.fitEllipse_I32(contour, 0, false, ellipse);
-
-			float phi = (float)UtilAngle.radianToDegree(ellipse.shape.phi);
-			float cx =  (float)ellipse.shape.center.x;
-			float cy =  (float)ellipse.shape.center.y;
-			float w = (float)ellipse.shape.a;
-			float h = (float)ellipse.shape.b;
-
-			//  really skinny ones are probably just a line and not what the user wants
-			if( w <= 2 || h <= 2 )
-				return;
-
-			canvas.rotate(phi, cx, cy);
-			r.set(cx-w,cy-h,cx+w+1,cy+h+1);
-			canvas.drawOval(r,paint);
-			canvas.rotate(-phi, cx, cy);
-		}
-	}
-	*/
 
 	protected class PolygonProcessing extends BaseProcessing {
 

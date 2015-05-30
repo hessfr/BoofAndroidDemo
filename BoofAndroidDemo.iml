@@ -26,6 +26,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="benchmark" level="project" />
-    <orderEntry type="library" name="src" level="project" />
+    <orderEntry type="library" name="src1" level="project" />
   </component>
 </module>
