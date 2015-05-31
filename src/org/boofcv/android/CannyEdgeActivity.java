@@ -7,6 +7,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.VerticalSeekBar;
 
 import java.util.List;
 import java.util.Random;
@@ -26,7 +27,7 @@ import boofcv.struct.image.ImageUInt8;
  * @author Peter Abeles
  */
 public class CannyEdgeActivity extends DemoVideoDisplayActivity
-	implements SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener
+	implements VerticalSeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener
 {
 	private static final String TAG = "CannyEdgeActivity";
 
@@ -50,13 +51,34 @@ public class CannyEdgeActivity extends DemoVideoDisplayActivity
 		LinearLayout parent = getViewContent();
 		parent.addView(controls);
 
-		SeekBar seek = (SeekBar)controls.findViewById(R.id.slider_threshold);
-		seek.setOnSeekBarChangeListener(this);
+		VerticalSeekBar seek = (VerticalSeekBar)controls.findViewById(R.id.slider_threshold);
+		seek.setOnSeekBarChangeListener((SeekBar.OnSeekBarChangeListener) this);
 		threshold = seek.getProgress()/100f;
 
 		CheckBox toggle = (CheckBox)controls.findViewById(R.id.check_colorize);
 		toggle.setOnCheckedChangeListener(this);
 		colorize = toggle.isChecked();
+
+//		Button testButton = (Button) findViewById(R.id.test_button);
+//
+//		testButton.setOnClickListener(new View.OnClickListener() {
+//			public void onClick(View v) {
+//
+//				if (mCamera != null) {
+//
+//					Log.i(TAG, "Releasing cam");
+//
+//					stopAndRelease();
+//
+//				} else {
+//
+//					Log.i(TAG, "Starting cam again...");
+//
+//					onResume();
+//				}
+//
+//			}
+//		});
 
 	}
 
@@ -66,25 +88,26 @@ public class CannyEdgeActivity extends DemoVideoDisplayActivity
 		startCanny();
 	}
 
-	@Override
-	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		threshold = progress/100.0f;
-
-	}
-
-	@Override
-	public void onStartTrackingTouch(SeekBar seekBar) {}
-
-	@Override
-	public void onStopTrackingTouch(SeekBar seekBar) {}
-
 	private void startCanny() {
 		setProcessing(new CannyProcessing());
 	}
 
 	@Override
-	public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-		colorize = b;
+	public void onCheckedChanged(CompoundButton compoundButton, boolean b) { colorize = b; }
+
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		threshold = progress/100.0f;
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+
 	}
 
 	protected class CannyProcessing extends VideoImageProcessing<ImageUInt8> {

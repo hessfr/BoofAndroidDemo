@@ -1,12 +1,11 @@
 package org.boofcv.android;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.hardware.Camera;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -51,6 +50,9 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 	private Visualization mDraw;
 	private CameraPreview mPreview;
 	protected VideoProcessing processing;
+
+//	private Paint textPaint = new Paint();
+
 
 	// Used to inform the user that its doing some calculations
 	ProgressDialog progressDialog;
@@ -104,7 +106,6 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 		return preview;
 	}
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -112,8 +113,8 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		contentView = new LinearLayout(this);
-		contentView.setOrientation(LinearLayout.VERTICAL);
-		LayoutParams contentParam = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		contentView.setOrientation(LinearLayout.HORIZONTAL);
+		LayoutParams contentParam = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 
 		preview = new FrameLayout(this);
 		LayoutParams frameLayoutParam = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT,1);
@@ -134,13 +135,12 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 		mDraw.setRotation(degree);
 		mPreview.setRotation(degree);
 
+
 	}
 
 	protected float getViewRotation() {
-		Log.i(TAG, "mDraw rotation: " + mDraw.getRotation() + " - mPreview roation: " + mPreview.getRotation());
 		return mDraw.getRotation();
 	}
-
 
 	@Override
 	protected void onResume() {
@@ -150,6 +150,13 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 			throw new RuntimeException("Bug, camera should not be initialized already");
 
 		setUpAndConfigureCamera();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		Log.i(TAG, "onConfigurationChanged");
 	}
 
 	@Override
@@ -176,7 +183,7 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 	/**
 	 * Sets up the camera if it is not already setup.
 	 */
-	private void setUpAndConfigureCamera() {
+	protected void setUpAndConfigureCamera() {
 
 		// Open and configure the camera
 		mCamera = openConfigureCamera(mCameraInfo);
@@ -205,9 +212,9 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 	/**
 	 * Draws on top of the video stream for visualizing results from vision algorithms
 	 */
-	private class Visualization extends SurfaceView {
+	protected class Visualization extends SurfaceView {
 
-		private Paint textPaint = new Paint();
+		protected Paint mTextPaint = new Paint();
 
 		double history[] = new double[10];
 		int historyNum = 0;
@@ -221,8 +228,8 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 			this.activity = context;
 
 			// Create out paint to use for drawing
-			textPaint.setARGB(255, 200, 0, 0);
-			textPaint.setTextSize(60);
+			mTextPaint.setARGB(255, 200, 0, 0);
+			mTextPaint.setTextSize(60);
 			// This call is necessary, or else the
 			// draw method will not be called.
 			setWillNotDraw(false);
@@ -250,8 +257,30 @@ public abstract class VideoDisplayActivity extends Activity implements Camera.Pr
 
 			canvas.restore();
 			if( showFPS )
-				canvas.drawText(String.format("FPS = %5.2f",meanFps), 50, 50, textPaint);
+				canvas.drawText(String.format("FPS = %5.2f",meanFps), 300, 300, mTextPaint);
+
+			int h = canvas.getHeight(); // max y coordinate
+			int w = canvas.getWidth(); // max x coordinate
+
+			mTextPaint.setStrokeWidth(2f);
+
+			// lines at the edge of the canvas
+			canvas.drawLine(0,0,w,0,mTextPaint);
+			canvas.drawLine(0,0,0,h,mTextPaint);
+			canvas.drawLine(w,0,w,h,mTextPaint);
+			canvas.drawLine(0,h,w,h,mTextPaint);
+
+			// diagonal lines:
+			canvas.drawLine(0,0,w,h,mTextPaint);
+			canvas.drawLine(w,0,0,h,mTextPaint);
 		}
+
+//		@Override
+//		public void setRotation(float degree) {
+//			mTextPaint.
+//		}
+
+
 	}
 
 	/**

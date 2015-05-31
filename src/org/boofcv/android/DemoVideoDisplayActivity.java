@@ -1,10 +1,10 @@
 package org.boofcv.android;
 
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Surface;
 import android.view.WindowManager;
 
 //import boofcv.android.gui.VideoDisplayActivity;
@@ -31,6 +31,8 @@ public class DemoVideoDisplayActivity extends VideoDisplayActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
 		preference = DemoMain.preference;
 		setShowFPS(preference.showFps);
 	}
@@ -38,7 +40,6 @@ public class DemoVideoDisplayActivity extends VideoDisplayActivity {
 	@Override
 	protected Camera openConfigureCamera(Camera.CameraInfo info) {
 
-		Log.i(TAG, "openConfigureCamera");
 		getViewRotation();
 
 		Camera mCamera = Camera.open(preference.cameraId);
@@ -53,23 +54,6 @@ public class DemoVideoDisplayActivity extends VideoDisplayActivity {
 
 		mCamera.setParameters(param);
 
-		// Rotate the views depending on the orientation of the screen:
-		int rot = (((WindowManager)
-				getSystemService(this.WINDOW_SERVICE)).getDefaultDisplay()).getRotation();
-
-		if (rot == Surface.ROTATION_0) {
-			rotateView(90f);
-		} else if (rot == Surface.ROTATION_90) {
-			// default, don't do anything
-//		} else if (rot == Surface.ROTATION_180) {
-//			rotateView(180f);
-		} else if (rot == Surface.ROTATION_270) {
-			rotateView(180f);
-		} else {
-			Log.e(TAG,"Invalid roation state");
-		}
-
-
 		return mCamera;
 	}
 
@@ -77,25 +61,13 @@ public class DemoVideoDisplayActivity extends VideoDisplayActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 
-		// TODO: When using display.getRotation() we can't detect 180 degree at once changes!
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		Log.i(TAG, "onConfigurationChanged");
 
-		getViewRotation();
-
-		int newRotation = (((WindowManager)
+		int rot = (((WindowManager)
 				getSystemService(this.WINDOW_SERVICE)).getDefaultDisplay()).getRotation();
 
-		if (newRotation == Surface.ROTATION_90) {
-			rotateView(0f);
-		} else if (newRotation == Surface.ROTATION_0) {
-			rotateView(90f);
-		} else if (newRotation == Surface.ROTATION_270) {
-			rotateView(180f);
-		} else {
-			Log.e(TAG, "Invalid roation state");
-		}
-
-		getViewRotation();
-
+		Log.i(TAG, "rotation: " + rot);
 	}
 
 

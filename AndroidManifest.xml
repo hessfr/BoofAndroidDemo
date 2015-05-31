@@ -26,13 +26,11 @@
 		</activity>
 		<activity android:name=".DemoVideoDisplayActivity"
 			android:configChanges="orientation|keyboardHidden|screenSize"/>
-			android:configChanges="orientation|screenSize"/>
-		<!--<activity android:name=".PreferenceActivity"/>-->
+		<activity android:name=".PreferenceActivity"/>
 		<activity android:name=".ScalePointDisplayActivity" android:screenOrientation="landscape"/>
 		<activity android:name=".LineDisplayActivity" android:screenOrientation="landscape"/>
-		<activity android:name=".ShapeFittingActivity" android:screenOrientation="landscape"/>
+		<activity android:name=".ShapeFittingActivity"/>
 		<activity android:name=".CannyEdgeActivity"
 			android:configChanges="orientation|keyboardHidden|screenSize"/>
-			<!--android:configChanges="orientation|screenSize"/>-->
 	</application>
 </manifest>

@@ -1,10 +1,12 @@
 package org.boofcv.android;
 
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.List;
 
@@ -44,6 +46,13 @@ public class ShapeFittingActivity extends DemoVideoDisplayActivity {
 	protected void onResume() {
 		super.onResume();
 		startShapeFitting();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+
+		Log.i("Shapefitting", "onConfigurationChanged called");
 	}
 
 	private void startShapeFitting() {
